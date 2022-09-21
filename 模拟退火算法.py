@@ -7,7 +7,6 @@ def func(x, y):  # 函数优化问题
     res = 4 * x ** 2 - 2.1 * x ** 4 + x ** 6 / 3 + x * y - 4 * y ** 2 + 4 * y ** 4
     return res
 
-
 # x为公式里的x1,y为公式里面的x2
 class SA:
     def __init__(self, func, iter=100, T0=100, Tf=0.01, alpha=0.99):
@@ -61,7 +60,6 @@ class SA:
         count = 0
         # 外循环迭代，当前温度小于终止温度的阈值
         while self.T > self.Tf:
-
             # 内循环迭代100次
             for i in range(self.iter):
                 f = self.func(self.x[i], self.y[i])  # f为迭代一次后的值

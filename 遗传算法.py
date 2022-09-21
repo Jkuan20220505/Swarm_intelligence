@@ -2,6 +2,8 @@
 
 import random
 import math
+import time
+
 import matplotlib.pyplot as plt
 
 class GA(object):
@@ -45,7 +47,6 @@ class GA(object):
         return temporary
         # 返回种群中所有个体编码完成后的十进制数
 
-    # 目标函数相当于环境 对染色体进行筛选，这里是 sin(x)+math.cos(x)
 
     # 个体适应度与其对应的个体表现型x的目标函数值相关联，x越接近于目标函数的最优点，其适应度越大，从而其存活的概率越大。反之适应度越小，
     # 存活概率越小。这就引出一个问题关于适应度函数的选择，本例中，函数值总取非负值(删去了。。。)，以函数最大值为优化目标，
@@ -53,6 +54,8 @@ class GA(object):
     # 需要将个体中基因型的每个变量提取出来，分别带入目标函数。比如说：我们想求x1 + lnx2的最大值。基因编码为4位编码，其中前两位是x1，
     # 后两位是x2。那么我们在求适应度的时候，需要将这两个值分别带入f(x1) = x, f(x2) = lnx。再对f(x1)和f(x2)求和得到此个体的适应度，
     # 具体的在此篇中有详解。在本篇中，虽然染色体长度为10, 但是实际上只有一个变量。
+
+    # 目标函数相当于环境 对染色体进行筛选，这里是 math.sin(x)+math.cos(x)
     def function(self, population):
         function1 = []
         temporary = self.translation(population) #将二进制的染色体基因型编码成十进制的表现型。
@@ -75,6 +78,7 @@ class GA(object):
             fitness_value.append(temporary)
         # 将适应度添加到列表中
         return fitness_value
+
     # 计算适应度和
     def sum(self, fitness_value):
         total = 0
@@ -119,7 +123,7 @@ class GA(object):
         fitin = 0
         newin = 0
         new_population = new_pop = population   # 新种群
-        # 轮盘赌方式
+        # 轮盘赌方式 获得最大值
         while newin < pop_len:
             if (ms[newin] < new_fitness[fitin]):
                 new_pop[newin] = population[fitin]
@@ -207,7 +211,7 @@ class GA(object):
     def main(self):
         results = [[]]
         population = self.species_origin()
-        for i in range(500): #遗传运算终止进化代数，一般为100~500
+        for _ in range(500): # 遗传运算终止进化代数，一般为100~500
             function_value = self.function(population)
             # print('fit funtion_value:',function_value)
             fitness_value = self.fitness(function_value)
@@ -226,6 +230,7 @@ class GA(object):
 
 
 if __name__ == '__main__':
+    start = time.time()
     population_size = 400   # M:群体大小，一般为20~100
     max_value = 5  # max_value对优化速度和平滑性有影响
     chromosome_length = 20  #染色体长度
@@ -234,4 +239,5 @@ if __name__ == '__main__':
     ga = GA(population_size, chromosome_length, max_value, pc, pm)
     ga.main()
 
-
+    end = time.time()
+    print(end-start)
